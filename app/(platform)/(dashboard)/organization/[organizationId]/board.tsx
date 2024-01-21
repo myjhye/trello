@@ -1,12 +1,12 @@
 import { deleteBoard } from "@/\bactions/delete-board";
-import { Button } from "@/components/ui/button";
+import { FormDelete } from "./form-delete";
 
 interface BoardProps {
     id: string;
     title: string;
 }
 
-export default function Board({id, title}: BoardProps) {
+export const Board = ({id, title}: BoardProps) => {
 
     const deleteBoardWithId = deleteBoard.bind(null, id);
 
@@ -18,13 +18,7 @@ export default function Board({id, title}: BoardProps) {
             <p>
                 board title: {title}
             </p>
-            <Button
-                type="submit" 
-                variant="destructive" 
-                size="sm"
-            >
-                삭제 
-            </Button>
+            <FormDelete />
         </form>
     )
 }
