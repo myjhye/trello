@@ -1,3 +1,4 @@
+import { deleteBoard } from "@/\bactions/delete-board";
 import { Button } from "@/components/ui/button";
 
 interface BoardProps {
@@ -6,8 +7,14 @@ interface BoardProps {
 }
 
 export default function Board({id, title}: BoardProps) {
+
+    const deleteBoardWithId = deleteBoard.bind(null, id);
+
     return (
-        <form className="flex items-center gap-x-2">
+        <form
+            action={deleteBoardWithId} 
+            className="flex items-center gap-x-2"
+        >
             <p>
                 board title: {title}
             </p>
