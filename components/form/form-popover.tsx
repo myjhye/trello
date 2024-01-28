@@ -8,6 +8,9 @@ import { FormSubmit } from "./form-submit";
 import { useAction } from "@/hooks/use-action";
 import { createBoard } from "@/actions/create-board";
 import { toast } from "sonner";
+import FormPicker from "./form-picker";
+import { ElementRef, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 interface FormPopoverProps {
     children: React.ReactNode;
@@ -23,10 +26,16 @@ export default function FormPopover({
     sideOffset = 0,
 } : FormPopoverProps) {
 
+    const router = useRouter();
+    const closeRef = useRef<ElementRef<"button">>(null);
+
     const { execute, fieldErrors } = useAction(createBoard, {
         onSuccess: (data) => {
-            console.log({ data });
             toast.success("보드 생성됨");
+            // 보드 생성 후 창 닫기
+            closeRef.current?.click();
+            // 보드 생성 후 해당 보드로 리다이렉트
+            router.push(`/board/${data.id}`);
         },
         onError: (error) => {
             console.log({ error });
@@ -36,7 +45,9 @@ export default function FormPopover({
 
     const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
-        execute({ title });
+        const image = formData.get("image") as string;
+
+        execute({ title, image });
     }
 
     return (
@@ -53,7 +64,7 @@ export default function FormPopover({
                 <div className="text-sm font-medium text-center text-neutral-600 pb-4">
                     보드 생성
                 </div>
-                <PopoverClose asChild>
+                <PopoverClose ref={closeRef} asChild>
                     <Button 
                         className="h-auto w-auto p-2 absolute top-2 right-2 text-neutral-600"
                         variant="ghost"
@@ -61,8 +72,15 @@ export default function FormPopover({
                         <X className="h-4 w-4" />
                     </Button>
                 </PopoverClose>
+                {/* 폼 제출 */}
                 <form action={onSubmit} className="space-y-4">
                     <div className="space-y-4">
+                        {/* unsplash 이미지들 */}
+                        <FormPicker 
+                            id="image"
+                            errors={fieldErrors}
+                        />
+                        {/* 보드 제목 입력칸 */}
                         <FormInput 
                             id="title"
                             label="보드 제목"
