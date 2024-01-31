@@ -51,8 +51,8 @@ export default function BoardTitleForm({data}: BoardTitleFormProps) {
     const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
         execute({
-            title,
             id: data.id,
+            title,
         });
     };
 
@@ -61,7 +61,7 @@ export default function BoardTitleForm({data}: BoardTitleFormProps) {
         formRef.current?.requestSubmit();
     };
 
-    // 편집 모드인 경우 폼 반환
+    // 편집 모드인 경우
     if (isEditing) {
         return (
             <form
@@ -80,7 +80,7 @@ export default function BoardTitleForm({data}: BoardTitleFormProps) {
         )
     }
 
-    // 편집 모드가 아닌 경우 버튼 반환
+    // 편집 모드가 아닌 경우
     return (
         <Button
             onClick={enableEditing}
