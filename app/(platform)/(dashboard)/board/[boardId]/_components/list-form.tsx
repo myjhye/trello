@@ -19,8 +19,10 @@ export default function ListForm() {
     const formRef = useRef<ElementRef<"form">>(null);
     const inputRef = useRef<ElementRef<"input">>(null);
 
+    // 편집 모드
     const [isEditing, setIsEditing] = useState(false);
 
+    // 편집 모드 활성화
     const enableEditing = () => {
         setIsEditing(true);
         setTimeout(() => {
@@ -28,11 +30,15 @@ export default function ListForm() {
         });
     };
 
+    // 편집 모드 비활성화
     const disableEditing = () => {
         setIsEditing(false);
     };
 
+    // 서버 요쳥을 위해 execute 호출 - useAction으로 createList 실행
     const { execute, fieldErrors } = useAction(createList, {
+        
+        // 서버 응답
         onSuccess: (data) => {
             toast.success(`목록 "${data.title}" 생성됨 `);
             disableEditing();
@@ -43,25 +49,30 @@ export default function ListForm() {
         }
     });
 
+    // Esc 키 누르면 편집 모드 비활성화
     const onKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
             disableEditing();
         };
     };
 
+    // 키보드 이벤트
     useEventListener("keydown", onKeyDown);
+    // form 외부 클릭 시 편집 모드 비활성화
     useOnClickOutside(formRef, disableEditing);
 
     const onSubmit = (formData: FormData) => {
         const title = formData.get("title") as string;
         const boardId = formData.get("boardId") as string;
 
+        // 서버 요청
         execute({
             title,
             boardId
         });
     }
 
+    // 편집 모드인 경우 아래 jdx 렌더링
     if (isEditing) {
         return (
           <ListWrapper>
@@ -99,6 +110,7 @@ export default function ListForm() {
         );
       };
 
+    // 편집 모드가 아닌 경우 아래 jdx 렌더링
     return (
         <ListWrapper>
             <button
