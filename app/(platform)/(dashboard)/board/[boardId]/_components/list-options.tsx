@@ -1,5 +1,6 @@
 "use client";
 
+import { copyList } from "@/actions/copy-list";
 import { deleteList } from "@/actions/delete-list";
 import { FormSubmit } from "@/components/form/form-submit";
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ export default function ListOptions({data, onAddCard}: ListOptionsProps) {
 
     const closeRef = useRef<ElementRef<"button">>(null);
     
+    // 삭제 응답
     const { execute: executeDelete } = useAction(deleteList, {
         onSuccess: (data) => {
             toast.success(`리스트 "${data.title}" 삭제됨`);
@@ -29,12 +31,32 @@ export default function ListOptions({data, onAddCard}: ListOptionsProps) {
             toast.error(error);
         },
     });
+
+    // 복제 응답
+    const { execute: executeCopy } = useAction(copyList, {
+        onSuccess: (data) => {
+            toast.success(`리스트 "${data.title}" 복제됨`);
+            closeRef.current?.click();
+        },
+        onError: (error) => {
+            toast.error(error);
+        },
+    });
     
+    // 삭제 요청
     const onDelete = (formData: FormData) => {
         const id = formData.get("id") as string;
         const boardId = formData.get("boardId") as string;
 
         executeDelete({ id, boardId });
+    };
+
+    // 복제 요청
+    const onCopy = (formData: FormData) => {
+        const id = formData.get("id") as string;
+        const boardId = formData.get("boardId") as string;
+
+        executeCopy({ id, boardId });
     };
     
     return (
@@ -64,7 +86,7 @@ export default function ListOptions({data, onAddCard}: ListOptionsProps) {
                 >
                     카드 추가
                 </Button>
-                <form>
+                <form action={onCopy}>
                     <input id="id" name="id" value={data.id} hidden />
                     <input id="boardId" name="boardId" value={data.boardId} hidden />
                     <FormSubmit 
