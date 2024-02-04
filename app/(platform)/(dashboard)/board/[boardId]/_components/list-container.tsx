@@ -8,6 +8,7 @@ import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { useAction } from "@/hooks/use-action";
 import { updateListOrder } from "@/actions/update-list-order";
 import { toast } from "sonner";
+import { updateCardOrder } from "@/actions/update-card-order";
 
 interface ListContainerProps {
     boardId: string;
@@ -27,7 +28,18 @@ export default function ListContainer({boardId, data}: ListContainerProps) {
     // 목록 데이터
     const [orderedData, setOrderedData] = useState(data);
 
+    // 목록 재배치
     const { execute: executeUpdateListOrder} = useAction(updateListOrder, {
+      onSuccess: () => {
+        toast.success("목록 재배치됨");
+      },
+      onError: (error) => {
+        toast.error(error);
+      },
+    });
+
+    // 카드 재배치
+    const { execute: executeUpdateCardOrder} = useAction(updateCardOrder, {
       onSuccess: () => {
         toast.success("목록 재배치됨");
       },
@@ -104,7 +116,11 @@ export default function ListContainer({boardId, data}: ListContainerProps) {
 
           setOrderedData(newOrderedData);
 
-          // 서버에 상태 저장
+          // 서버에 상태 저장 -> 카드를 같은 목록에 재배치
+          executeUpdateCardOrder({ 
+            boardId,
+            items: reorderedCard, 
+          });
 
         // 카드를 다른 목록에 옮길 때  
         } else {
@@ -129,7 +145,11 @@ export default function ListContainer({boardId, data}: ListContainerProps) {
 
           setOrderedData(newOrderedData);
 
-          // 서버에 상태 저장
+          // 서버에 상태 저장 -> 카드를 같은 목록에 재배치
+          executeUpdateCardOrder({ 
+            boardId,
+            items: destList.cards, 
+          });
           
         }
       }
