@@ -6,6 +6,8 @@ import { db } from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { createSafeAction } from "@/lib/create-safe-action";
 import { CreateCard } from "./schema";
+import { createAuditLog } from "@/lib/create-audit-log";
+import { ACTION, ENTITY_TYPE } from "@prisma/client";
 
 // InputType 형식의 data를 받고, ReturnType을 비동기로(Promise) 반환
 const handler = async (data: InputType): Promise<ReturnType> => {
@@ -51,6 +53,13 @@ const handler = async (data: InputType): Promise<ReturnType> => {
                 listId,
                 order: newOrder,
             },
+        });
+
+        await createAuditLog({
+            entityId: card.id,
+            entityTitle: card.title,
+            entityType: ENTITY_TYPE.CARD,
+            action: ACTION.CRAETE,
         });
 
     } catch (error) {
