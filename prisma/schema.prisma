@@ -56,7 +56,7 @@ model Card {
 }
 
 enum ACTION {
-  CRAETE
+  CREATE
   UPDATE
   DELETE
 }
