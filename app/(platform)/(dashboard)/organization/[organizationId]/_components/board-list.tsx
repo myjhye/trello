@@ -1,7 +1,9 @@
 import FormPopover from "@/components/form/form-popover";
 import Hint from "@/components/hint";
 import { Skeleton } from "@/components/ui/skeleton";
+import { MAX_FREE_BOARDS } from "@/constants/boards";
 import { db } from "@/lib/db";
+import { getAvailableCount } from "@/lib/org-limit";
 import { auth } from "@clerk/nextjs";
 import { HelpCircle, User2 } from "lucide-react";
 import Link from "next/link";
@@ -12,12 +14,12 @@ export default async function BoardList() {
     // 사용자의 orgId 가져오기
     const { orgId } = auth();
 
-    // orgId가 없으면 /select-org으로 리다이렉트
+    // orgId가 없으면 /select-org (조직선택페이지)으로 이동
     if (!orgId) {
         return redirect("/select-org");
     }
 
-    // 사용자의 orgId에 해당하는 보드 목록 가져오기
+    // 사용자의 orgId에 해당하는 보드목록 가져오기
     const boards = await db.board.findMany({
         where: {
             orgId
@@ -26,6 +28,8 @@ export default async function BoardList() {
             createdAt: "desc"
         }
     });
+
+    const availableCount = await getAvailableCount();
 
     return (
         <div className="space-y-4">
@@ -56,7 +60,7 @@ export default async function BoardList() {
                     >
                         <p>새 보드 생성</p>
                         <span className="text-sm">
-                            5개 남음
+                            {`${MAX_FREE_BOARDS - availableCount}개 남음`}
                         </span>
                         <Hint
                             sideOffset={40}

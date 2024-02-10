@@ -67,6 +67,7 @@ enum ENTITY_TYPE {
   CARD
 }
 
+// 활동로그
 model AuditLog {
   id String @id @default(uuid())
   orgId String
@@ -78,6 +79,16 @@ model AuditLog {
   userId String
   userImage String @db.Text
   userName String @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 조직생성제한
+model OrgLimit {
+  id String @id @default (uuid())
+  orgId String @unique
+  count Int @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

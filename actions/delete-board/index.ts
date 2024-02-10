@@ -9,6 +9,7 @@ import { DeleteBoard } from "./schema";
 import { redirect } from "next/navigation";
 import { createAuditLog } from "@/lib/create-audit-log";
 import { ACTION, ENTITY_TYPE } from "@prisma/client";
+import decreaseAvailableCount from "@/lib/org-limit";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
     
@@ -30,6 +31,9 @@ const handler = async (data: InputType): Promise<ReturnType> => {
                 orgId,
             },
         });
+
+        // 보드 삭제 후 보드 생성 수 증가
+        await decreaseAvailableCount();
 
         await createAuditLog({
             entityTitle: board.title,
