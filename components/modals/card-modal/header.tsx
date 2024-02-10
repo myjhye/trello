@@ -25,6 +25,10 @@ export default function Header({data}: HeaderProps) {
                 queryKey: ["card", data.id]
             });
 
+            queryClient.invalidateQueries({
+                queryKey: ["card-logs", data.id]
+            });
+
             toast.success(`"${data.title}"으로 수정됨`);
             setTitle(data.title);
         },

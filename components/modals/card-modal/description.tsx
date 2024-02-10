@@ -52,6 +52,9 @@ export default function Description({ data }: DescriptionProps) {
             queryClient.invalidateQueries({
                 queryKey: ["card", data.id],
             });
+            queryClient.invalidateQueries({
+                queryKey: ["card-logs", data.id],
+            });
             toast.success(`카드 "${data.title}" 수정됨`);
             disableEditing();
         },
