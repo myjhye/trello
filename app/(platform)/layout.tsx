@@ -3,7 +3,7 @@ import { Toaster } from "sonner";
 import ModalProvider from "@/components/providers/modal-provider";
 import QueryProvider from "@/components/providers/query-provider";
 
-const PlatformLayout = ({children}: {children: React.ReactNode;}) => {
+export default function PlatformLayout({children}: {children: React.ReactNode;}) {
     return (
         <ClerkProvider>
             <QueryProvider>
@@ -14,5 +14,3 @@ const PlatformLayout = ({children}: {children: React.ReactNode;}) => {
         </ClerkProvider>
     );
 };
-
-export default PlatformLayout;
