@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import FormPicker from "./form-picker";
 import { ElementRef, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 interface FormPopoverProps {
     children: React.ReactNode;
@@ -26,6 +27,7 @@ export default function FormPopover({
     sideOffset = 0,
 } : FormPopoverProps) {
 
+    const proModal = useProModal();
     const router = useRouter();
     const closeRef = useRef<ElementRef<"button">>(null);
 
@@ -34,12 +36,14 @@ export default function FormPopover({
             toast.success("보드 생성됨");
             // 보드 생성 후 창 닫기
             closeRef.current?.click();
-            // 보드 생성 후 해당 보드로 리다이렉트
+            // 보드 생성 후 해당 보드로 이동
             router.push(`/board/${data.id}`);
         },
         onError: (error) => {
             console.log({ error });
             toast.error(error);
+            // 보드 생성 에러 시 업그레이드 권유 팝업 표시
+            proModal.onOpen();
         }
     });
 
