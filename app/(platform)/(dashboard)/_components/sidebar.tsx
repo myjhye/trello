@@ -15,11 +15,16 @@ interface SidebarProps {
 
 export const Sidebar = ({storageKey = "t-sidebar-state"}: SidebarProps) => {
 
+    // 사이드바 확장상태 -> useLocalStorage 훅 사용해 확장상태 저장
     const [expanded, setExpanded] = useLocalStorage<Record<string, any>>(storageKey, {});
+    
+    // 활성화된 조직 (현재 클릭된 조직) 가져오기 -> useOrganization 훅 사용 
     const {
         organization: activeOrganization,
         isLoaded: isLoadedOrg,
     } = useOrganization();
+    
+    // 생성된 전체 조직목록 가져오기 -> useOrganizationList 훅 사용
     const {
         userMemberships,
         isLoaded: isLoadedOrgList
@@ -29,6 +34,7 @@ export const Sidebar = ({storageKey = "t-sidebar-state"}: SidebarProps) => {
         },
     });
 
+    // 아코디언에서 확장된 항목을 기본값으로 제공
     const defaultAccordionValue: string[] = Object.keys(expanded)
         .reduce((acc: string[], key: string) => {
             if (expanded[key]) {
@@ -37,6 +43,7 @@ export const Sidebar = ({storageKey = "t-sidebar-state"}: SidebarProps) => {
             return acc;
         }, []);
 
+    // 아이템 확장/축소
     const onExpand = (id: string) => {
         setExpanded((curr) => ({
             ...curr,
@@ -44,7 +51,7 @@ export const Sidebar = ({storageKey = "t-sidebar-state"}: SidebarProps) => {
         }));
     };
 
-    // 로딩
+    // 로딩표시, 조직정보가 로드되지 않았으면 스켈레톤 표시
     if (!isLoadedOrg || !isLoadedOrgList || userMemberships.isLoading) {
         return (
             <>
