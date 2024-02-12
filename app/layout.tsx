@@ -3,8 +3,10 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import { siteConfig } from '@/config/site'
 
+// Inter 폰트
 const inter = Inter({ subsets: ['latin'] })
 
+// 메타데이터
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,

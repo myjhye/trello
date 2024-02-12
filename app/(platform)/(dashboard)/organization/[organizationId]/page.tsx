@@ -3,7 +3,7 @@ import Info from "./_components/info";
 import BoardList from "./_components/board-list";
 import { Suspense } from "react";
 
-const OrganizationIdPage = async () => {
+export default async function OrganizationIdPage () {
 
     return (
         <div className="w-full mb-20">
@@ -20,5 +20,3 @@ const OrganizationIdPage = async () => {
         </div>
     )
 };
-
-export default OrganizationIdPage;
