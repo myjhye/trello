@@ -34,6 +34,7 @@ interface NavItemProps {
 export const NavItem = ({isExpanded, isActive, organization, onExpand}: NavItemProps) => {
 
     const router  = useRouter();
+    // 현재 경로
     const pathname = usePathname();
 
     const routes = [
@@ -59,6 +60,7 @@ export const NavItem = ({isExpanded, isActive, organization, onExpand}: NavItemP
         },
     ];
 
+    // 아코디언 항목 클릭 시 해당 경로로 이동
     const onClick = (href: string) => {
         router.push(href);
     }
@@ -69,6 +71,7 @@ export const NavItem = ({isExpanded, isActive, organization, onExpand}: NavItemP
           className="border-none"
         >
           <AccordionTrigger
+            // 확장이벤트 호출
             onClick={() => onExpand(organization.id)}
             className={cn(
               "flex items-center gap-x-2 p-1.5 text-neutral-700 rounded-md hover:bg-neutral-500/10 transition text-start no-underline hover:no-underline",
@@ -97,6 +100,7 @@ export const NavItem = ({isExpanded, isActive, organization, onExpand}: NavItemP
                     onClick={() => onClick(route.href)}
                     className={cn(
                         "w-full font-normal justify-start pl-10 mb-1",
+                        // 현재 경로인 버튼에 배경이랑 폰트 하늘색
                         pathname === route.href && "bg-sky-500/10 text-sky-700"
                     )}
                     variant="ghost"
@@ -110,6 +114,7 @@ export const NavItem = ({isExpanded, isActive, organization, onExpand}: NavItemP
       );
     };
 
+    // 스켈레톤
     NavItem.Skeleton = function SkeletonNavItem() {
       return (
         <div className="flex items-center gap-x-2">
