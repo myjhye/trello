@@ -22,6 +22,7 @@ export const MobileSidebar = () => {
     // 모바일 사이드바 열려 있는지 여부
     const isOpen = useMobileSidebar((state) => state.isOpen);
 
+    // 사이드바 버튼 보이기
     useEffect(() => {
         setIsMounted(true);
     }, []);

@@ -1,3 +1,5 @@
+// 조직 아이디를 전달 받아 해당 조직 활성화
+
 "use client";
 
 import { useOrganizationList } from "@clerk/nextjs";
