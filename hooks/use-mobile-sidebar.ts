@@ -1,3 +1,5 @@
+// 모바일 사이드바 상태관리 훅
+
 import { create } from "zustand";
 
 type MobileSidebarStore = {

@@ -34,7 +34,7 @@ export const Sidebar = ({storageKey = "t-sidebar-state"}: SidebarProps) => {
         },
     });
 
-    // 아코디언에서 확장된 항목을 기본값으로 제공
+    // 아코디언이 확장되어 있는 상태를 기본값으로 제공
     const defaultAccordionValue: string[] = Object.keys(expanded)
         .reduce((acc: string[], key: string) => {
             if (expanded[key]) {
