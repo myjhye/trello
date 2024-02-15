@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+// 입력 데이터의 유효성 검사
 export type FieldErrors<T> = {
     [K in keyof T]?: string[];
 };

@@ -1,3 +1,5 @@
+// 조직 정보
+
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
@@ -7,8 +9,10 @@ import Image from "next/image";
 
 export default function Info() {
 
+    // 조직 정보 가져오기
     const { organization, isLoaded } = useOrganization();
 
+    // 로딩 중일 때 스켈레톤 표시
     if (!isLoaded) {
         return (
             <Info.Skeleton />
@@ -38,7 +42,7 @@ export default function Info() {
     )
 };
 
-// 로딩용 블럭
+// 스켈레톤
 Info.Skeleton = function SkeletonInfo() {
     return (
         <div className="flex items-center gap-x-4">

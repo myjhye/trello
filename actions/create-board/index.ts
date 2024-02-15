@@ -43,7 +43,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
             error: "필드 작성 부족으로 보드 생성 실패"
         };
     }
-
+   
     let board;
     
     // 사용자가 입력한 데이터 데이터베이스에 보내기
